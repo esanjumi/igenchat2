@@ -52,36 +52,3 @@ jobs:
           bcc: wiyomere@gmail.com
           from: Cypress CI <noreply@example.com>
           attachments: cypress/reports/mochawesome-report/mochawesome.html
-
-
- my-cypress-project/
-├── cypress/
-    ├── .github/
-│   └── workflows/
-│       └── cypress.yml
-│   ├── downloads/
-│   ├── e2e/
-│   │   ├── test.cy.js
-│   │   └── test2.cy.js
-│   ├── fixtures/
-│   ├── plugins/
-│   │   └── index.js
-│   ├── reports/
-│   │   └── mochawesome-report/
-    ├── scripts/
-│       └── sendEmail.js
-│   ├── support/
-│   │   ├── commands.js
-│   │   ├── e2e.js
-├── .igenchat/
-    ├── .github\workflows
-│    └── IGENRUN.yml
-     └── .gitignore
-     └── README.md
-├── node_modules/
-├── .gitignore
-├── cypress.config.js
-├── package.json
-└── README.md
-
-
