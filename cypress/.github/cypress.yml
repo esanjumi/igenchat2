@@ -1,0 +1,87 @@
+name: IGEN-CHAT Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+      - name: Generate HTML Report
+        run: |
+          npx mochawesome-merge cypress/reports/mochawesome-report/*.json > cypress/reports/mochawesome-report/report.json
+          npx mochawesome-report-generator cypress/reports/mochawesome-report/report.json -o cypress/reports/mochawesome-report
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-report
+          path: cypress/reports/mochawesome-report/
+
+      - name: Send Email with Report
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.mail.yahoo.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Cypress Test Report"
+          body: "Please find the attached Cypress test report."
+          to: william@iauconsultingservices.com
+          cc: esanjumi@hotmail.co.uk, iyomere7@gmail.com
+          bcc: wiyomere@gmail.com
+          from: Cypress CI <noreply@example.com>
+          attachments: cypress/reports/mochawesome-report/mochawesome.html
+
+
+ my-cypress-project/
+├── cypress/
+    ├── .github/
+│   └── workflows/
+│       └── cypress.yml
+│   ├── downloads/
+│   ├── e2e/
+│   │   ├── test.cy.js
+│   │   └── test2.cy.js
+│   ├── fixtures/
+│   ├── plugins/
+│   │   └── index.js
+│   ├── reports/
+│   │   └── mochawesome-report/
+    ├── scripts/
+│       └── sendEmail.js
+│   ├── support/
+│   │   ├── commands.js
+│   │   ├── e2e.js
+├── .igenchat/
+    ├── .github\workflows
+│    └── IGENRUN.yml
+     └── .gitignore
+     └── README.md
+├── node_modules/
+├── .gitignore
+├── cypress.config.js
+├── package.json
+└── README.md
+
+
